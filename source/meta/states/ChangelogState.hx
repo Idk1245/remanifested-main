@@ -49,6 +49,10 @@ class ChangelogState extends MusicBeatState
 			// DONT PUT X IN THE FIRST PARAMETER OF new ALPHABET() !!
 		}
 
+		#if android
+                addVirtualPad(UP_DOWN, A_B);
+                #end
+		
 		super.create();
 	}
 
