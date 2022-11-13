@@ -9,9 +9,9 @@ import flixel.system.FlxSound;
 #if sys
 import sys.io.File;
 import sys.FileSystem;
-#else
-import openfl.utils.Assets;
 #end
+import openfl.utils.Assets;
+
 import meta.states.PlayState;
 
 using StringTools;
@@ -61,7 +61,7 @@ class CoolUtil
 	public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:Array<String> = [];
-		#if sys
+		#if windows
 		if (FileSystem.exists(path))
 			daList = File.getContent(path).trim().split('\n');
 		#else
