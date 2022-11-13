@@ -13,11 +13,14 @@ import lime.app.Application;
 import openfl.events.UncaughtErrorEvent;
 import haxe.CallStack;
 import haxe.io.Path;
+#if windows
 import Discord.DiscordClient;
+#end
 import flixel.system.scaleModes.PixelPerfectScaleMode;
 import sys.FileSystem;
 import sys.io.File;
 import sys.io.Process;
+import lime.system.System;
 using StringTools;
 
 class Main extends Sprite
@@ -43,6 +46,8 @@ class Main extends Sprite
 
 	public static var fpsVar:FPS;
 
+	public static var path:String = System.applicationStorageDirectory;
+	
 	// You can pretty much ignore everything from here on - your code should go in your meta.states.
 
 	public static function main():Void
@@ -125,7 +130,7 @@ class Main extends Sprite
 		dateNow = dateNow.replace(" ", "_");
 		dateNow = dateNow.replace(":", "'");
 
-		path = "./crash/" + "PsychEngine_" + dateNow + ".txt";
+		path = Main.path + "./crash/" + "PsychEngine_" + dateNow + ".txt";
 
 		var silly = Std.string(__superCoolErrorMessagesArray[FlxG.random.int(0, __superCoolErrorMessagesArray.length)]);
 
@@ -146,8 +151,8 @@ class Main extends Sprite
 			+ e.error
 			+ "\nPlease report this error to the GitHub page: https://github.com/ShadowMario/FNF-PsychEngine\n\n> Crash Handler written by: sqirra-rng";
 
-		if (!FileSystem.exists("./crash/"))
-			FileSystem.createDirectory("./crash/");
+		if (!FileSystem.exists(Main.path + "./crash/"))
+			FileSystem.createDirectory(Main.path + "./crash/");
 
 		File.saveContent(path, errMsg + "\n");
 
@@ -155,7 +160,9 @@ class Main extends Sprite
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
 		Application.current.window.alert(errMsg, "Error!");
+		#if windows
 		DiscordClient.shutdown();
+		#end
 		Sys.exit(1);
 	}
 
