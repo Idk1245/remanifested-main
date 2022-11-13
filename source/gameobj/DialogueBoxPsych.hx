@@ -99,7 +99,7 @@ class DialogueCharacter extends FlxSprite
 		var characterPath:String = 'images/dialogue/' + character + '.json';
 		var rawJson = null;
 
-		#if MODS_ALLOWED
+		#if windows
 		var path:String = Paths.modFolders(characterPath);
 		if (!FileSystem.exists(path))
 		{
@@ -336,7 +336,18 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			if (bgFade.alpha > 0.5)
 				bgFade.alpha = 0.5;
 
-			if (PlayerSettings.player1.controls.ACCEPT)
+			#if android
+                        var justTouched:Bool = false;
+
+		        for (touch in FlxG.touches.list)
+		        {
+			        if (touch.justPressed)
+			        {
+				        justTouched = true;
+			        }
+		        }
+		        #end
+			if (PlayerSettings.player1.controls.ACCEPT #if android || justTouched #end)
 			{
 				if (!daText.finishedText)
 				{
